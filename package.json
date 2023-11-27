@@ -1,0 +1,24 @@
+{
+  "name": "personal-expensify-be",
+  "version": "1.0.0",
+  "description": "A simple BE expense dashboard application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mani-arjunan/personal-expensify-be.git"
+  },
+  "keywords": [
+    "node",
+    "expensify-node",
+    "typescript"
+  ],
+  "author": "Manikandan Arjunan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mani-arjunan/personal-expensify-be/issues"
+  },
+  "homepage": "https://github.com/mani-arjunan/personal-expensify-be#readme"
+}
