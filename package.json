@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare-test-environment": "npm run stop-containers && npm run up-containers && npm run health-check",
+    "stop-containers": "docker compose rm -s -f",
+    "up-containers": "docker compose up --detach",
+    "health-check": "sh ./scripts/health-check.sh"
   },
   "repository": {
     "type": "git",
