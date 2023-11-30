@@ -4,11 +4,13 @@
   "description": "A simple BE expense dashboard application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-    "prepare-test-environment": "npm run stop-containers && npm run up-containers && npm run health-check",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare-test-environment": "npm run stop-containers && npm run up-containers && npm run health-check && npm run initial-setup",
+    "initial-setup": "bash ./scripts/initial-db-setup.sh",
+    "migrate-script": "bash ./scripts/migrate.sh",
     "stop-containers": "docker compose rm -s -f",
     "up-containers": "docker compose up --detach",
-    "health-check": "sh ./scripts/health-check.sh"
+    "health-check": "bash ./scripts/health-check.sh postgres"
   },
   "repository": {
     "type": "git",

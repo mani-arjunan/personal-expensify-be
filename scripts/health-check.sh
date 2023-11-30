@@ -15,12 +15,35 @@ if [ -z $1 ]; then
 fi;
 
 
-while [ ${CURRENT_RETRY} -lt ${MAX_RETRIES}]
+while [ $CURRENT_RETRY -lt $MAX_RETRIES ]
 do
-  CURRENT_RETRY=${CURRENT_RETRY}+1
+  CURRENT_RETRY=$((CURRENT_RETRY+1))
   echo "[Attempt ${CURRENT_RETRY}/${MAX_RETRIES}]: waiting for $1 to be healthy"
 
-  COMMAND="$(docker-compose ps $1)"
-  echo "${COMMAND}"
+  COMMAND="$(docker compose ps $1)"
+  echo "$COMMAND"
 
-  if grep -q '(healthy)' <<< "$COMMAND";
+  if grep -q '(healthy)' <<< "$COMMAND"; then
+    printf "\n $1 is start and is healthy \n"
+    exit;
+  else
+    sleep $DELAY
+  fi;
+done
+
+throw_error "$1 timeout waiting for health check"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
