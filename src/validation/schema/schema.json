@@ -1,0 +1,142 @@
+{
+  "update-account": {
+    "requiredKeys": ["username", "token"],
+    "properties": [
+      {
+        "key": "token",
+        "minLength": null,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": null,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "username",
+        "minLength": 4,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      }
+    ]
+  },
+  "close-account": {
+    "requiredKeys": ["username", "token"],
+    "properties": [
+      {
+        "key": "token",
+        "minLength": null,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": null,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "username",
+        "minLength": 4,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      }
+    ]
+  },
+  "login": {
+    "requiredKeys": ["password", "username"],
+    "properties": [
+      {
+        "key": "password",
+        "minLength": 8,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 15,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "username",
+        "minLength": 4,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      }
+    ]
+  },
+  "signup": {
+    "requiredKeys": ["fullName", "age", "sex", "martialStatus", "password", "username"],
+    "properties": [
+      {
+        "key": "fullName",
+        "type": "string",
+        "required": true,
+        "minLength": null,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "age",
+        "type": "number",
+        "minLength": null,
+        "required": false,
+        "defaultValue": null,
+        "maxLength": 75,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "sex",
+        "minLength": null,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 20,
+        "customRegex": null,
+        "allowedValues": ["Male", "Female"]
+      },
+      {
+        "key": "martialStatus",
+        "minLength": null,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 20,
+        "customRegex": null,
+        "allowedValues": ["Married", "Single", "Divorce"]
+      },
+      {
+        "key": "password",
+        "minLength": 8,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 15,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "username",
+        "minLength": 4,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "module": "commonjs",
+    "allowJs": false,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "lib": ["ES2021"],
+    "target": "ES2021",
+    "incremental": true,
+    "assumeChangesOnlyAffectDirectDependencies": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*.ts","src/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+
