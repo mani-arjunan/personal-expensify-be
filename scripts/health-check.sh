@@ -24,7 +24,7 @@ do
   echo "$COMMAND"
 
   if grep -q '(healthy)' <<< "$COMMAND"; then
-    printf "\n $1 is start and is healthy \n"
+    printf "\n $1 is started and is healthy \n"
     exit;
   else
     sleep $DELAY

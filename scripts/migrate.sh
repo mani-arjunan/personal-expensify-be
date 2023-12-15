@@ -22,8 +22,6 @@ contains () {
   return 1
 }
 
-echo "Running initial DB Setup for => ${database_url}"
-
 migrated_files=$(psql $database_url -AXqtc "SELECT migration_file FROM migration_details")
 
 for file_to_migrate in $(ls ./scripts/sql/migrations)

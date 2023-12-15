@@ -7,11 +7,11 @@ export function userRoute(knex: Knex): Router {
 
   router.get("/", validateAccessToken, async (req: Request, res: Response) => {
     console.log("You are in Users get route");
-    const data = await knex.raw(`
+    const users = await knex.raw(`
       SELECT * FROM users
     `);
-    console.log(data.rows)
-    res.send("Welcome to Users Route!");
+    res.status(200);
+    res.send(users.rows)
   });
 
   return router;
