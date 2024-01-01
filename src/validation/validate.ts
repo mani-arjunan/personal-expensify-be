@@ -3,6 +3,8 @@ import schema from "./schema/schema.json";
 import jwt from "jsonwebtoken";
 import { environment } from "../environment";
 import { ValidateRoutes } from "../types";
+import { checkAndRemoveRefreshToken } from "../database/user";
+import { Knex } from "knex";
 
 export function validateToken(
   validator: (req: Request, res: Response, next: NextFunction) => void,
@@ -12,6 +14,7 @@ export function validateToken(
 ) {
   if (environment.ENV !== "development") {
     validator(req, res, next);
+    return;
   }
 
   next();
@@ -62,10 +65,12 @@ export function validatePayload(
           `should contain only these values ${curr.allowedValues.join(", ")}`,
         );
       }
-      acc = {
-        ...acc,
-        [curr.key]: error.join(", "),
-      };
+      if (error.length > 0) {
+        acc = {
+          ...acc,
+          [curr.key]: error.join(", "),
+        };
+      }
     }
     return acc;
   }, {});
@@ -82,6 +87,14 @@ export function validatePayload(
     }
     res.status(422);
     res.send(errors);
+    return;
+  }
+  if (missingKeys.length > 0) {
+    res.status(422);
+    res.send({
+      requiredKeys: `Missing Required Keys: ${missingKeys.join(", ")}`,
+    });
+    return;
   }
   next();
 }
@@ -90,6 +103,7 @@ export function validateRefreshToken(
   req: Request,
   res: Response,
   next: NextFunction,
+  knex: Knex,
 ): void {
   const authHeader = req.headers.authorization;
 
@@ -103,16 +117,13 @@ export function validateRefreshToken(
     jwt.verify(
       token,
       environment.REFRESH_TOKEN_SECRET,
-      (err: unknown, data: unknown) => {
+      async (err: unknown, data: unknown) => {
         if (err) {
           res.status(403);
           res.send("Invalid refresh token");
+          await checkAndRemoveRefreshToken(knex, token);
           return;
         } else {
-          req.headers = {
-            ...req.headers,
-            userData: data as string,
-          };
           next();
           return;
         }
@@ -131,7 +142,6 @@ export function validateAccessToken(
   if (!authHeader) {
     res.status(401);
     res.send("Token not present");
-    return;
   } else {
     const token = authHeader.split(" ")[1];
 
@@ -142,18 +152,14 @@ export function validateAccessToken(
         if (err) {
           res.status(403);
           res.send("Invalid access token");
-          return;
         } else {
           req.headers = {
             ...req.headers,
             userData: data as string,
           };
           next();
-          return;
         }
       },
     );
   }
 }
-
-console.log(schema);

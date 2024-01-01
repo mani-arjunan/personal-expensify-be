@@ -1,42 +1,7 @@
 {
-  "update-account": {
-    "requiredKeys": ["username", "token"],
-    "properties": [
-      {
-        "key": "token",
-        "minLength": null,
-        "type": "string",
-        "required": true,
-        "defaultValue": null,
-        "maxLength": null,
-        "customRegex": null,
-        "allowedValues": []
-      },
-      {
-        "key": "username",
-        "minLength": 4,
-        "type": "string",
-        "required": true,
-        "defaultValue": null,
-        "maxLength": 200,
-        "customRegex": null,
-        "allowedValues": []
-      }
-    ]
-  },
   "close-account": {
-    "requiredKeys": ["username", "token"],
+    "requiredKeys": ["username"],
     "properties": [
-      {
-        "key": "token",
-        "minLength": null,
-        "type": "string",
-        "required": true,
-        "defaultValue": null,
-        "maxLength": null,
-        "customRegex": null,
-        "allowedValues": []
-      },
       {
         "key": "username",
         "minLength": 4,
