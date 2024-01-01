@@ -4,4 +4,10 @@ export type User = {
   fullName: string;
   sex: string;
   martialStatus: string;
-}
+};
+
+export type ValidateRoutes =
+  | "signup"
+  | "login"
+  | "update-account"
+  | "close-account";

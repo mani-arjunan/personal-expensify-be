@@ -8,5 +8,6 @@ export function routes(): Router {
 
   router.use("/users", userRoute(database));
 
+
   return router;
 }
