@@ -12,14 +12,38 @@ export type ValidateRoutes =
   | "signup"
   | "login"
   | "update-account"
-  | "close-account";
+  | "close-account"
+  | "add-relation"
+  | "profile"
+  | "approve-relation";
 
 export type RefreshToken = {
   refreshToken: string;
-  userId: number
-}
+  userId: number;
+};
 
-export type LoginToken = {
+export type Login = {
   accessToken: string;
-  refreshToken: string
-}
+  refreshToken: string;
+  username?: string;
+};
+
+export type Relation = {
+  primaryUsername: string;
+  associatedUsername: string;
+  associationType: string;
+};
+
+export type ApproveRelation = Pick<
+  Relation,
+  "primaryUsername" | "associatedUsername"
+> & {
+  isApproved: boolean;
+};
+
+export type Profile = {
+  user: User;
+  pendingRelations: Array<Pick<User, "username">>;
+  rejectedRelations: Array<Pick<User, "username">>;
+  myRelations: Array<Pick<User, 'username'>>;
+};

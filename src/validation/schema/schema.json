@@ -1,4 +1,69 @@
 {
+  "approve-relation": {
+    "requiredKeys": ["primaryUsername", "isApproved"],
+    "properties": [
+      {
+        "key": "primaryUsername",
+        "minLength": 0,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "isApproved",
+        "minLength": 0,
+        "type": "boolean",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      }
+    ]
+  },
+  "add-relation": {
+    "requiredKeys": ["associatedUsername", "associationType"],
+    "properties": [
+      {
+        "key": "associatedUsername",
+        "minLength": 0,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      },
+      {
+        "key": "associationType",
+        "minLength": 0,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": ["Husband", "Wife", "Mother", "Father", "Child"]
+      }
+    ]
+  },
+  "profile": {
+    "requiredKeys": ["username"],
+    "properties": [
+      {
+        "key": "username",
+        "minLength": 0,
+        "type": "string",
+        "required": true,
+        "defaultValue": null,
+        "maxLength": 200,
+        "customRegex": null,
+        "allowedValues": []
+      }
+    ]
+  },
   "close-account": {
     "requiredKeys": ["username"],
     "properties": [
@@ -40,7 +105,14 @@
     ]
   },
   "signup": {
-    "requiredKeys": ["fullName", "age", "sex", "martialStatus", "password", "username"],
+    "requiredKeys": [
+      "fullName",
+      "age",
+      "sex",
+      "martialStatus",
+      "password",
+      "username"
+    ],
     "properties": [
       {
         "key": "fullName",

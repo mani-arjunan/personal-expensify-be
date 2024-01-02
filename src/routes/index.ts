@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { userRoute } from "./user";
 import { tokenRoute } from "./token"
+import { relationRoute } from "./relation";
 import { DatabaseConnection } from "../connection";
 
 export function routes(): Router {
@@ -9,7 +10,7 @@ export function routes(): Router {
 
   router.use("/users", userRoute(database));
   router.use("/get-access-token", tokenRoute(database))
-
+  router.use("/relation", relationRoute(database));
 
   return router;
 }

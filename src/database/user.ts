@@ -12,28 +12,24 @@ export async function getAllUsersDb(knex: Knex): Promise<Array<User>> {
   return users;
 }
 
-
 export async function updateUserDb(
   knex: Knex,
   username: string,
   user: User,
 ): Promise<void> {
   const columnsToUpdate = Object.keys(user).reduce((acc: string[], key) => {
-    acc = [
-      ...acc,
-      `${key} = '${user[key]}'`
-    ]
-    return acc  
-  }, [])
+    acc = [...acc, `${key} = '${user[key]}'`];
+    return acc;
+  }, []);
 
   await knex.raw(`
     UPDATE
       users
     SET
-      ${columnsToUpdate.join(', ')} 
+      ${columnsToUpdate.join(", ")} 
     WHERE
       username = '${username}'
-  `)
+  `);
 }
 
 export async function insertUserDb(
@@ -94,13 +90,17 @@ export async function insertRefreshTokenDb(
 export async function getUserWithUsername(
   knex: Knex,
   username: string,
-): Promise<Pick<User, "id" | "username" | "password">> {
+): Promise<User> {
   const user = (
     await knex.raw(`
     SELECT
-      id,
+      age,
+      full_name,
       username,
-      password
+      martial_status,
+      sex,
+      password,
+      id
     FROM
       users
     WHERE

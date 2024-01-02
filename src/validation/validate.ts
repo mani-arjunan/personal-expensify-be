@@ -153,10 +153,9 @@ export function validateAccessToken(
           res.status(403);
           res.send("Invalid access token");
         } else {
-          req.headers = {
-            ...req.headers,
-            userData: data as string,
-          };
+          res.locals = {
+            username: (data as Record<string, string>).username,
+          }
           next();
         }
       },

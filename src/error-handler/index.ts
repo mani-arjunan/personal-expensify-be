@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { AuthError, UniqueError } from "./custom-errors";
+import { AuthError, PayloadError, UniqueError } from "./custom-errors";
 
 function handleCustomErrors(res: Response, error: unknown) {
   if (error instanceof UniqueError) {
@@ -9,6 +9,11 @@ function handleCustomErrors(res: Response, error: unknown) {
   }
   if (error instanceof AuthError) {
     res.status(401);
+    res.send(error.message);
+    return;
+  }
+  if (error instanceof PayloadError) {
+    res.status(422);
     res.send(error.message);
     return;
   }

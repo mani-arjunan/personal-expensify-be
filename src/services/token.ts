@@ -1,9 +1,6 @@
 import { Knex } from "knex";
-import jwt from "jsonwebtoken";
 
-import { LoginToken } from "../types";
 import { generateToken } from "./user";
-import { environment } from "../environment";
 import { getRefreshToken, getUser } from "../database/user";
 import { AuthError } from "../error-handler/custom-errors";
 

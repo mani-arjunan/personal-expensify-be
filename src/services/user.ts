@@ -2,7 +2,7 @@ import { Knex } from "knex";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import { LoginToken, User } from "../types";
+import { Login, User } from "../types";
 import { environment } from "../environment";
 import {
   closeUser,
@@ -27,7 +27,7 @@ function encryptPassword(password: string): string {
   return encryptedPassword;
 }
 
-export function generateToken(payload: { username: string }): LoginToken {
+export function generateToken(payload: { username: string }): Login {
   const accessToken = jwt.sign(payload, environment.ACCESS_TOKEN_SECRET, {
     expiresIn: "24hr",
   });
@@ -62,7 +62,7 @@ export async function updateUser(knex: Knex, userDetails: User): Promise<void> {
   }
 }
 
-export async function insertUser(knex: Knex, user: User): Promise<LoginToken> {
+export async function insertUser(knex: Knex, user: User): Promise<Login> {
   const password = encryptPassword(user.password);
   const userId = await insertUserDb(knex, {
     ...user,
@@ -76,6 +76,7 @@ export async function insertUser(knex: Knex, user: User): Promise<LoginToken> {
   return {
     accessToken,
     refreshToken,
+    username: user.username,
   };
 }
 
@@ -102,7 +103,7 @@ export async function logoutUser(
 export async function loginUser(
   knex: Knex,
   user: Pick<User, "username" | "password">,
-): Promise<LoginToken> {
+): Promise<Login> {
   const userDetails = await getUserWithUsername(knex, user.username);
 
   if (!userDetails) {
@@ -120,5 +121,6 @@ export async function loginUser(
   return {
     accessToken,
     refreshToken,
+    username: userDetails.username,
   };
 }

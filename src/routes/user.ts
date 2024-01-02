@@ -19,38 +19,33 @@ import { handleErrors } from "../error-handler";
 export function userRoute(knex: Knex): Router {
   const router = Router();
 
+  router.post(
+    "/profile",
+    (req, res, next) => validateToken(validateAccessToken, req, res, next),
+    (req, res, next) => validatePayload(req, res, next, "profile"),
+    async (req: Request, res: Response) => {},
+  );
+
   router.put(
     "/update-user",
     (req, res, next) => validateToken(validateAccessToken, req, res, next),
     async (req: Request, res: Response) => {
-      const userDetails = req.body
+      const userDetails = req.body;
 
-      await handleErrors(
-        res,
-        () => updateUser(knex, userDetails),
-        200,
-      );
-    }
-  )
+      await handleErrors(res, () => updateUser(knex, userDetails), 200);
+    },
+  );
 
   router.post(
     "/close-account",
     (req, res, next) => validateToken(validateAccessToken, req, res, next),
     (req, res, next) => validatePayload(req, res, next, "close-account"),
     async (req: Request, res: Response) => {
-      const username = req.body.username as string
+      const username = req.body.username as string;
 
-      await handleErrors(
-        res,
-        () =>
-          deleteUser(
-            knex,
-            { username },
-          ),
-        200,
-      );
-    }
-  )
+      await handleErrors(res, () => deleteUser(knex, { username }), 200);
+    },
+  );
 
   router.post(
     "/login",
@@ -67,11 +62,7 @@ export function userRoute(knex: Knex): Router {
     async (req: Request, res: Response) => {
       await handleErrors(
         res,
-        () =>
-          logoutUser(
-            knex,
-            req.headers.userData as unknown as { username: string },
-          ),
+        () => logoutUser(knex, res.locals as unknown as { username: string }),
         200,
       );
     },
