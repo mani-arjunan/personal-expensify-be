@@ -34,6 +34,15 @@ export type Relation = {
   associationType: string;
 };
 
+export type PendingRelation = Pick<User, "username"> & {
+  requestedAssociationType: string;
+};
+
+export type SentRelation = {
+  status: "pending" | "approved" | "rejected";
+  username: string;
+};
+
 export type ApproveRelation = Pick<
   Relation,
   "primaryUsername" | "associatedUsername"
@@ -43,7 +52,5 @@ export type ApproveRelation = Pick<
 
 export type Profile = {
   user: User;
-  pendingRelations: Array<Pick<User, "username">>;
-  rejectedRelations: Array<Pick<User, "username">>;
-  myRelations: Array<Pick<User, 'username'>>;
+  myRelations: Array<Pick<User, "username">>;
 };

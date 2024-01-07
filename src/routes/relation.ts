@@ -7,7 +7,13 @@ import {
   validateToken,
 } from "../validation/validate";
 import { handleErrors } from "../error-handler";
-import { addRelation, approveRelation } from "../services/relation";
+import {
+  addRelation,
+  approveRelation,
+  getPendingRelations,
+  getSentRelations,
+  getMyRelations
+} from "../services/relation";
 import { ApproveRelation, Relation } from "../types";
 
 export function relationRoute(knex: Knex): Router {
@@ -51,6 +57,39 @@ export function relationRoute(knex: Knex): Router {
       );
     },
   );
+
+  router.get(
+    "/pending-relations",
+    (req: Request, res: Response, next: NextFunction) =>
+      validateToken(validateAccessToken, req, res, next),
+    async (req: Request, res: Response) => {
+      const username = (res.locals as unknown as Record<string, string>)
+        .username;
+      await handleErrors(res, () => getPendingRelations(knex, username), 200);
+    },
+  );
+
+  router.get(
+    "/sent-relations",
+    (req: Request, res: Response, next: NextFunction) =>
+      validateToken(validateAccessToken, req, res, next),
+    async (req: Request, res: Response) => {
+      const username = (res.locals as unknown as Record<string, string>)
+        .username;
+      await handleErrors(res, () => getSentRelations(knex, username), 200);
+    },
+  );
+
+  router.get(
+    '/get-relations',
+    (req: Request, res: Response, next: NextFunction) =>
+      validateToken(validateAccessToken, req, res, next),
+    async (req: Request, res: Response) => {
+      const username = (res.locals as unknown as Record<string, string>)
+        .username;
+      await handleErrors(res, () => getMyRelations(knex, username), 200);
+    },
+  )
 
   return router;
 }
