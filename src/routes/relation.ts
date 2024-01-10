@@ -27,6 +27,7 @@ export function relationRoute(knex: Knex): Router {
     async (req: Request, res: Response) => {
       const payload = {
         ...req.body,
+        ...((res.locals.defaults && res.locals.defaults) || {}),
         primaryUsername: (res.locals as unknown as Record<string, string>)
           .username,
       };
@@ -46,6 +47,7 @@ export function relationRoute(knex: Knex): Router {
     async (req: Request, res: Response) => {
       const payload = {
         ...req.body,
+        ...((res.locals.defaults && res.locals.defaults) || {}),
         associatedUsername: (res.locals as unknown as Record<string, string>)
           .username,
       };
@@ -59,7 +61,7 @@ export function relationRoute(knex: Knex): Router {
   );
 
   router.get(
-    "/pending-relations",
+    "/relation-requests",
     (req: Request, res: Response, next: NextFunction) =>
       validateToken(validateAccessToken, req, res, next),
     async (req: Request, res: Response) => {
@@ -81,7 +83,7 @@ export function relationRoute(knex: Knex): Router {
   );
 
   router.get(
-    '/get-relations',
+    '/my-relations',
     (req: Request, res: Response, next: NextFunction) =>
       validateToken(validateAccessToken, req, res, next),
     async (req: Request, res: Response) => {

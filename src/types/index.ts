@@ -8,6 +8,11 @@ export type User = {
   martialStatus: string;
 };
 
+export type IncomeExpense = {
+  id: number;
+  type: string;
+};
+
 export type ValidateRoutes =
   | "signup"
   | "login"
@@ -15,7 +20,9 @@ export type ValidateRoutes =
   | "close-account"
   | "add-relation"
   | "profile"
-  | "approve-relation";
+  | "approve-relation"
+  | "add-income"
+  | "add-expense";
 
 export type RefreshToken = {
   refreshToken: string;
@@ -54,3 +61,18 @@ export type Profile = {
   user: User;
   myRelations: Array<Pick<User, "username">>;
 };
+
+type IncomeExpensePayload = {
+  amount: number;
+  username: string;
+  date: string;
+  private?: boolean;
+};
+
+export type ExpenseType = IncomeExpensePayload & {
+  expenseType: string
+}
+
+export type IncomeType = IncomeExpensePayload & {
+  incomeType: string
+}

@@ -39,6 +39,7 @@ export function validatePayload(
     },
     [],
   );
+  const defaultValues = {};
 
   const errors = schemaToValidate.properties.reduce((acc, curr) => {
     const currentProp: string = payload[curr.key];
@@ -65,11 +66,20 @@ export function validatePayload(
           `should contain only these values ${curr.allowedValues.join(", ")}`,
         );
       }
+
+      if (curr.customRegex && !new RegExp(curr.customRegex).test(currentProp)) {
+        error.push(`Invalid ${curr.key} format`);
+      }
+
       if (error.length > 0) {
         acc = {
           ...acc,
           [curr.key]: error.join(", "),
         };
+      }
+    } else {
+      if (curr.defaultValue !== null) {
+        defaultValues[curr.key] = curr.defaultValue;
       }
     }
     return acc;
@@ -95,6 +105,12 @@ export function validatePayload(
       requiredKeys: `Missing Required Keys: ${missingKeys.join(", ")}`,
     });
     return;
+  }
+  if (Object.keys(defaultValues).length > 0) {
+    res.locals = {
+      ...res.locals,
+      defaults: { ...defaultValues },
+    };
   }
   next();
 }
@@ -155,7 +171,7 @@ export function validateAccessToken(
         } else {
           res.locals = {
             username: (data as Record<string, string>).username,
-          }
+          };
           next();
         }
       },
