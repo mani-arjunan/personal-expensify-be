@@ -1,10 +1,37 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, query } from "express";
 import schema from "./schema/schema.json";
 import jwt from "jsonwebtoken";
 import { environment } from "../environment";
-import { ValidateRoutes } from "../types";
+import { ValidateRoutes, QueryParams } from "../types";
 import { checkAndRemoveRefreshToken } from "../database/user";
 import { Knex } from "knex";
+import { getDateType } from "../helpers";
+
+function getQueryParamsValidator(queryParams: Record<string, unknown>, type: QueryParams) {
+  const date = queryParams['range-date'] || queryParams['range-month'] || queryParams['range-year'];
+
+  const validateQueryParams = {
+    'get-expense': {
+      ...(date ? {
+        date: {
+          value: date,
+          type: 'string',
+          dateType: getDateType(queryParams)
+        }
+      } : {}),
+    },
+    'get-income': {
+      ...(date ? { date: {
+          value: date,
+          type: 'string',
+          dateType: getDateType(queryParams)
+        }
+      } : {}),
+    }
+  }
+
+  return validateQueryParams[type]
+}
 
 export function validateToken(
   validator: (req: Request, res: Response, next: NextFunction) => void,
@@ -177,4 +204,58 @@ export function validateAccessToken(
       },
     );
   }
+}
+
+export function validateQueryParams<T extends QueryParams>(
+  queryParams: Record<string, unknown>,
+  res: Response,
+  next: NextFunction,
+  typeOfQueryParam: T
+): void {
+  const fieldsToValidate = getQueryParamsValidator(queryParams, typeOfQueryParam)
+  const fieldKeys = Object.keys(fieldsToValidate);
+  const errors = {}
+
+  for (let i = 0; i < fieldKeys.length; i++) {
+    const [from, to] = fieldsToValidate[fieldKeys[i]].value.split('-');
+
+    if (fieldKeys[i] === 'date') {
+      if ((!from && !to) || !from || !to) {
+        errors[fieldKeys[i]] = {
+          ...errors[fieldKeys[i]],
+          range: `Invalid range, supported format is dd/mm/yyyy or dd/mm/yy - dd/mm/yyyy or dd/mm/yy`
+        }
+      } else {
+        const regex = {
+          date: /^(3[01]|[12][0-9]|0?[1-9])(\/|-)(1[0-2]|0?[1-9])\2([0-9]{2})?[0-9]{4}$/,
+          month: /^(0[1-9]|1[0-2])\/([0-9]{4})$/,
+          year: /^([0-9]{4})$/
+        }
+
+        if (!regex[fieldsToValidate[fieldKeys[i]].dateType].test(from)) {
+          errors[fieldKeys[i]] = {
+            ...errors[fieldKeys[i]],
+            from: `Invalid range "${from}" format, supported format is dd/mm/yyyy or dd/mm/yy`
+          }
+        }
+        if (!regex[fieldsToValidate[fieldKeys[i]].dateType].test(to)) {
+          errors[fieldKeys[i]] = {
+            ...errors[fieldKeys[i]],
+            to: `Invalid range "${to}" format, supported format is dd/mm/yyyy or dd/mm/yy`
+          }
+        }
+      }
+    }
+  }
+
+  const errorValues = Object.values(errors);
+  if (errorValues.length > 0) {
+    res.status(422);
+    res.send({
+      errors,
+    });
+    return;
+  }
+
+  next()
 }

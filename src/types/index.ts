@@ -13,6 +13,11 @@ export type IncomeExpense = {
   type: string;
 };
 
+export type QueryParams = 
+  | "get-expense"
+  | "get-income"
+
+
 export type ValidateRoutes =
   | "signup"
   | "login"
@@ -76,3 +81,13 @@ export type ExpenseType = IncomeExpensePayload & {
 export type IncomeType = IncomeExpensePayload & {
   incomeType: string
 }
+
+export type IncomeExpenseReponse = {
+  amount: number;
+  date: string;
+}
+
+export type ExpenseResponse = IncomeExpenseReponse & ExpenseType
+
+export type IncomeResponse = IncomeExpenseReponse & ExpenseType
+
