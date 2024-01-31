@@ -43,7 +43,6 @@ export function expenseRoute(knex: Knex): Router {
       async (req: Request, res: Response) => {
         const data = await getExpense(knex, req.query);
 
-        console.log(data)
         res.status(200);
         res.send(data);
       },

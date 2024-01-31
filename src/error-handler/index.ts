@@ -32,7 +32,6 @@ export async function handleErrors(
     res.status(statusCode);
     res.send(data);
   } catch (e) {
-    console.log(e, "====");
     handleCustomErrors(res, e);
   }
 }

@@ -44,28 +44,6 @@ export async function getExpenseDb(
   to: string,
   limit: number,
 ): Promise<Array<ExpenseResponse>> {
-  console.log(knex.raw(`    SELECT
-      amount as "amount",
-      e.type as "expenseType",
-      date
-    FROM
-      expense_transaction et
-    JOIN
-      expense e
-    ON
-      e.type = ${expenseType ? expenseType : "e.type"}
-    WHERE
-      e.id = expense_id
-    ${
-      from
-        ? `AND
-      et."date":: date >= date '${from}'
-    AND
-      et."date":: date < date '${to}'`
-        : ""
-    }
-    ORDER BY et."date"
-`).toSQL().sql.toString())
   const result = await knex.raw(`
     SELECT
       amount as "amount",
