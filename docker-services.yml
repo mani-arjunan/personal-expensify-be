@@ -1,0 +1,25 @@
+version: '3'
+services:
+  expense-be:
+    image: expense-be
+    container_name: expense-be-service
+    build:
+      context: .
+      dockerfile: ./src/Dockerfile
+      target: development
+    command: npm run start
+    volumes:
+      - "./src:/usr/src/app/src"
+    networks:
+      - custom_network
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@postgres:5432/postgres"
+    expose:
+      - '3000'
+    ports:
+      - '3000:3000'
+
+networks:
+  custom_network:
+    external: false
+    name: custom_network

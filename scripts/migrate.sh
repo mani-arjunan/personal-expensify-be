@@ -1,3 +1,5 @@
+#!/bin/bash
+
 database_url="${DATABASE_URL:-postgresql://postgres:password@localhost:54321/postgres}"
 
 # migration_details insert query
