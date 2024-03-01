@@ -72,6 +72,7 @@ type IncomeExpensePayload = {
   username: string;
   date: string;
   private?: boolean;
+  description?: string;
 };
 
 export type ExpenseType = IncomeExpensePayload & {
@@ -83,6 +84,7 @@ export type IncomeType = IncomeExpensePayload & {
 }
 
 export type IncomeExpenseReponse = {
+  description?: string;
   amount: number;
   date: string;
 }

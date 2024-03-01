@@ -21,6 +21,7 @@ export async function addIncomeDb(
     INSERT INTO income_transaction (
       user_id,
       income_id,
+      description,
       amount,
       date,
       private
@@ -28,6 +29,7 @@ export async function addIncomeDb(
     (
       ${userId},
       ${incomeId},
+      ${payload.description || ''},
       ${payload.amount},
       '${new Date(new Date(payload.date).getTime()).toISOString()}',
       ${payload.private}
@@ -45,6 +47,7 @@ export async function getIncomeDb(
   const result = await knex.raw(`
     SELECT
       amount as "amount",
+      description,
       i.type as "incomeType",
       date
     FROM

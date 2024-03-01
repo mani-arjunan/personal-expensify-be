@@ -23,6 +23,7 @@ export async function addExpenseDb(
     INSERT INTO expense_transaction (
       user_id,
       expense_id,
+      description,
       amount,
       date,
       private
@@ -30,6 +31,7 @@ export async function addExpenseDb(
     (
       ${userId},
       ${expenseId},
+      ${payload.description || ''},
       ${payload.amount},
       '${new Date(new Date(payload.date).getTime()).toISOString()}',
       ${payload.private}
@@ -48,6 +50,7 @@ export async function getExpenseDb(
     SELECT
       amount as "amount",
       e.type as "expenseType",
+      description,
       date
     FROM
       expense_transaction et

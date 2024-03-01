@@ -16,6 +16,9 @@ export function routes(): Router {
   router.use("/relation", relationRoute(database));
   router.use("/income", incomeRoute(database));
   router.use("/expense", expenseRoute(database));
+  router.use("/", (_, res) => {
+    res.send("Welcome to expense app");
+  });
   router.use(methodNotAllowed);
 
   return router;
